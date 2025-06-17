@@ -2,8 +2,8 @@ package com.bookmyshow.services.booking;
 
 import java.util.List;
 
-import com.bookmyshow.dtos.CreateBookingResponseDto;
+import com.bookmyshow.models.Booking;
 
 public interface BookingService {
-    public CreateBookingResponseDto createBooking(Long userId , Long ShowId , List<Long> showSeatId);
+    public Booking createBooking(Long userId , Long ShowId , List<Long> showSeatId);
 }

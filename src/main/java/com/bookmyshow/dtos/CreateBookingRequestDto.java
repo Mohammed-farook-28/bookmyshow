@@ -11,4 +11,5 @@ public class CreateBookingRequestDto {
 
     private Long userId;
     private List<Long> showSeatId;
+    private Long showId;
 }

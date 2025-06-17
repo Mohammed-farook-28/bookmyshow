@@ -7,15 +7,17 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.bookmyshow.dtos.CreateBookingResponseDto;
+import com.bookmyshow.models.Booking;
 import com.bookmyshow.models.Show;
 import com.bookmyshow.models.ShowSeat;
 import com.bookmyshow.models.User;
+import com.bookmyshow.models.enums.BookingStatus;
 import com.bookmyshow.models.enums.ShowSeatStatus;
 import com.bookmyshow.repositories.ShowRepository;
 import com.bookmyshow.repositories.ShowSeatRepository;
 import com.bookmyshow.repositories.UserRepository;
 import com.bookmyshow.services.booking.BookingService;
+import com.bookmyshow.services.price.PriceCalculationService;
 
 import lombok.AllArgsConstructor;
 
@@ -25,11 +27,12 @@ public class BookingServiceImpl implements  BookingService{
     private final UserRepository userRepo;
     private final ShowRepository showRepo;
     private final ShowSeatRepository showSeatRepo;
-    private final ShowSeatRepository showSeatTypeRepo;
+    private final PriceCalculationService priceCalculationService;
+
 
     @Override
     @Transactional(isolation = Isolation.SERIALIZABLE)
-    public CreateBookingResponseDto createBooking(Long userId, Long showId, List<Long> showSeatId) {
+    public Booking createBooking(Long userId, Long showId, List<Long> showSeatId) {
 
         Optional<User> optionalUser  = userRepo.findById(userId);
         if(optionalUser.isEmpty()){
@@ -50,18 +53,24 @@ public class BookingServiceImpl implements  BookingService{
        
         for(ShowSeat showSeat : showSeats){
             if(!showSeat.getShowSeatStatus().equals(ShowSeatStatus.AVAILABLE)){
-                throw new RuntimeException("Show Seat Id : " + showSeat.getId() + " does not belong to Show Id : " + showId);
+                throw new RuntimeException("Seats are Unavailable !");
             }
         }
 
         for(ShowSeat showSeat : showSeats){
             showSeat.setShowSeatStatus(ShowSeatStatus.BLOCKED);
+            showSeatRepo.save(showSeat);
         }
 
+        Booking booking =  new Booking();
+        booking.setUser(user);
+        booking.setShow(show);
+        booking.setBookingStatus(BookingStatus.PENDING);
+        booking.setShowSeat(showSeats);
+        booking.setAmount(priceCalculationService.calculatePrice(showSeats));
 
         
-
-        return null;
+        return booking;
 
     }
 

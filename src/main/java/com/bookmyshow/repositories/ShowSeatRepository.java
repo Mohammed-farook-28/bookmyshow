@@ -10,4 +10,6 @@ import com.bookmyshow.models.ShowSeat;
 @Repository
 public interface ShowSeatRepository extends JpaRepository<ShowSeatRepository, Long>{
     List<ShowSeat> findAlllById(Iterable<Long> showSeatIds);
+
+    ShowSeat save(ShowSeat showSeat);
 }

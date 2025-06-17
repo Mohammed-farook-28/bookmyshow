@@ -17,7 +17,7 @@ import com.bookmyshow.repositories.ShowRepository;
 import com.bookmyshow.repositories.ShowSeatRepository;
 import com.bookmyshow.repositories.UserRepository;
 import com.bookmyshow.services.booking.BookingService;
-import com.bookmyshow.services.price.PriceCalculationService;
+import com.bookmyshow.services.price.impl.PriceCalculationServiceImpl;
 
 import lombok.AllArgsConstructor;
 
@@ -27,7 +27,7 @@ public class BookingServiceImpl implements  BookingService{
     private final UserRepository userRepo;
     private final ShowRepository showRepo;
     private final ShowSeatRepository showSeatRepo;
-    private final PriceCalculationService priceCalculationService;
+    private final PriceCalculationServiceImpl priceCalculationService;
 
 
     @Override

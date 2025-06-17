@@ -13,7 +13,7 @@ import lombok.AllArgsConstructor;
 
 @Service
 @AllArgsConstructor
-public class priceCalculationServiceImpl implements  PriceCalculationService{
+public class PriceCalculationServiceImpl implements  PriceCalculationService{
     public final ShowSeatTypeRepository showSeatTypeRepo;
 
     @Override
